@@ -8,6 +8,7 @@ export default defineConfig({
   optimizeDeps: {
     disabled: true,
   },
+  base: '/mirror/element3/',
   test: {
     clearMocks: true,
     environment: 'jsdom',

@@ -1,9 +1,11 @@
-name: Publish Docs Deploy
+name: Build Docker Image
 
 on:
-  workflow_run:
-    workflows: ['Publish to NPM registry']
-    types: [completed]
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
 
 jobs:
   deploy-docs:
@@ -57,27 +59,10 @@ jobs:
         env:
           DOC_ENV: production
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          folder: docs/.vitepress/dist
-          git-config-name: ElementPlusBot
-          git-config-email: hello@element-plus.org
-          commit-message: website deploy
-
-      - name: Deploy to vercel
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
-        with:
-          token: ${{ secrets.EP_BOT_TOKEN }}
-          branch: main
-          folder: docs/.vitepress/dist
-          repository-name: element-plus/vercel-publish
-          git-config-name: ElementPlusBot
-          git-config-email: hello@element-plus.org
-
-      - name: Sync
-        env:
-          TRIGGERSYNCURL: ${{ secrets.TRIGGERSYNCURL }}
-        run: curl -k "$TRIGGERSYNCURL"
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: xbeeant/element3
+          tags: latest
