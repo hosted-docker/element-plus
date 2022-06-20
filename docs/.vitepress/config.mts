@@ -76,7 +76,6 @@ export const config: UserConfig = {
   markdown: {
     config: (md) => mdPlugin(md),
   },
-  base: '/mirror/element3/',
   vue: {
     template: {
       ssr: true,
