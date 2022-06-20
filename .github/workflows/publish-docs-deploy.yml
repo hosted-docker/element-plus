@@ -2,9 +2,9 @@ name: Build Docker Image
 
 on:
   push:
-    branches: ['gh-pages']
+    branches: ['dev']
   pull_request:
-    branches: ['gh-pages']
+    branches: ['dev']
   workflow_dispatch:
 
 jobs:
