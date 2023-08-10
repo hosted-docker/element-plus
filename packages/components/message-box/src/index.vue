@@ -147,6 +147,7 @@
   </transition>
 </template>
 <script lang="ts">
+// @ts-nocheck
 import {
   computed,
   defineComponent,
@@ -163,13 +164,8 @@ import { TrapFocus } from '@element-plus/directives'
 import {
   useDraggable,
   useId,
-  useLocale,
   useLockscreen,
-  useNamespace,
-  useRestoreActive,
   useSameTarget,
-  useSize,
-  useZIndex,
 } from '@element-plus/hooks'
 import ElInput from '@element-plus/components/input'
 import { ElOverlay } from '@element-plus/components/overlay'
@@ -177,13 +173,12 @@ import {
   TypeComponents,
   TypeComponentsMap,
   isValidComponentSize,
-  off,
-  on,
 } from '@element-plus/utils'
 import { ElIcon } from '@element-plus/components/icon'
 import ElFocusTrap from '@element-plus/components/focus-trap'
+import { useGlobalComponentSettings } from '@element-plus/components/config-provider'
 
-import type { ComponentPublicInstance, PropType } from 'vue'
+import type { ComponentPublicInstance, DefineComponent, PropType } from 'vue'
 import type { ComponentSize } from '@element-plus/constants'
 import type {
   Action,
@@ -252,12 +247,24 @@ export default defineComponent({
   emits: ['vanish', 'action'],
   setup(props, { emit }) {
     // const popup = usePopup(props, doClose)
-    const { t } = useLocale()
-    const ns = useNamespace('message-box')
+    const {
+      locale,
+      zIndex,
+      ns,
+      size: btnSize,
+    } = useGlobalComponentSettings(
+      'message-box',
+      computed(() => props.buttonSize)
+    )
+
+    const { t } = locale
+    const { nextZIndex } = zIndex
+
     const visible = ref(false)
-    const { nextZIndex } = useZIndex()
     // s represents state
     const state = reactive<MessageBoxState>({
+      // autofocus element when open message-box
+      autofocus: true,
       beforeClose: null,
       callback: null,
       cancelButtonText: '',
@@ -303,11 +310,6 @@ export default defineComponent({
     const contentId = useId()
     const inputId = useId()
 
-    const btnSize = useSize(
-      computed(() => props.buttonSize),
-      { prop: true, form: true, formItem: true }
-    )
-
     const iconComponent = computed(
       () => state.icon || TypeComponentsMap[state.type] || ''
     )
@@ -336,7 +338,11 @@ export default defineComponent({
       (val) => {
         if (val) {
           if (props.boxType !== 'prompt') {
-            focusStartRef.value = confirmRef.value?.$el ?? rootRef.value
+            if (state.autofocus) {
+              focusStartRef.value = confirmRef.value?.$el ?? rootRef.value
+            } else {
+              focusStartRef.value = rootRef.value
+            }
           }
           state.zIndex = nextZIndex()
         }
@@ -344,7 +350,11 @@ export default defineComponent({
         if (val) {
           nextTick().then(() => {
             if (inputRef.value && inputRef.value.$el) {
-              focusStartRef.value = getInputElement() ?? rootRef.value
+              if (state.autofocus) {
+                focusStartRef.value = getInputElement() ?? rootRef.value
+              } else {
+                focusStartRef.value = rootRef.value
+              }
             }
           })
         } else {
@@ -360,13 +370,13 @@ export default defineComponent({
     onMounted(async () => {
       await nextTick()
       if (props.closeOnHashChange) {
-        on(window, 'hashchange', doClose)
+        window.addEventListener('hashchange', doClose)
       }
     })
 
     onBeforeUnmount(() => {
       if (props.closeOnHashChange) {
-        off(window, 'hashchange', doClose)
+        window.removeEventListener('hashchange', doClose)
       }
     })
 
@@ -463,9 +473,6 @@ export default defineComponent({
       useLockscreen(visible)
     }
 
-    // restore to prev active element.
-    useRestoreActive(visible)
-
     return {
       ...toRefs(state),
       ns,
@@ -492,5 +499,5 @@ export default defineComponent({
       t,
     }
   },
-})
+}) as DefineComponent
 </script>

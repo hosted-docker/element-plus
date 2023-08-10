@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { computed, getCurrentInstance, inject, toRaw, unref, watch } from 'vue'
 import { get } from 'lodash-unified'
 import { escapeStringRegexp } from '@element-plus/utils'
@@ -62,7 +63,7 @@ export function useOption(props, states) {
       return (
         arr &&
         arr.some((item) => {
-          return get(item, valueKey) === get(target, valueKey)
+          return toRaw(get(item, valueKey)) === get(target, valueKey)
         })
       )
     }
@@ -94,6 +95,12 @@ export function useOption(props, states) {
     () => props.value,
     (val, oldVal) => {
       const { remote, valueKey } = select.props
+
+      if (!Object.is(val, oldVal)) {
+        select.onOptionDestroy(oldVal, instance.proxy)
+        select.onOptionCreate(instance.proxy)
+      }
+
       if (!props.created && !remote) {
         if (
           valueKey &&
@@ -117,15 +124,19 @@ export function useOption(props, states) {
   )
 
   const { queryChange } = toRaw(select)
-  watch(queryChange, (changes: Ref<QueryChangeCtx>) => {
-    const { query } = unref(changes)
+  watch(
+    queryChange,
+    (changes: Ref<QueryChangeCtx>) => {
+      const { query } = unref(changes)
 
-    const regexp = new RegExp(escapeStringRegexp(query), 'i')
-    states.visible = regexp.test(currentLabel.value) || props.created
-    if (!states.visible) {
-      select.filteredOptionsCount--
-    }
-  })
+      const regexp = new RegExp(escapeStringRegexp(query), 'i')
+      states.visible = regexp.test(currentLabel.value) || props.created
+      if (!states.visible) {
+        select.filteredOptionsCount--
+      }
+    },
+    { immediate: true }
+  )
 
   return {
     select,

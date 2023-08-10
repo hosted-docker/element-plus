@@ -32,6 +32,7 @@
                 :placeholder="t('el.datepicker.startDate')"
                 :class="drpNs.e('editor')"
                 :model-value="minVisibleDate"
+                :validate-event="false"
                 @input="(val) => handleDateInput(val, 'min')"
                 @change="(val) => handleDateChange(val, 'min')"
               />
@@ -46,6 +47,7 @@
                 :disabled="rangeState.selecting"
                 :placeholder="t('el.datepicker.startTime')"
                 :model-value="minVisibleTime"
+                :validate-event="false"
                 @focus="minTimePickerVisible = true"
                 @input="(val) => handleTimeInput(val, 'min')"
                 @change="(val) => handleTimeChange(val, 'min')"
@@ -72,6 +74,7 @@
                 :placeholder="t('el.datepicker.endDate')"
                 :model-value="maxVisibleDate"
                 :readonly="!minDate"
+                :validate-event="false"
                 @input="(val) => handleDateInput(val, 'max')"
                 @change="(val) => handleDateChange(val, 'max')"
               />
@@ -87,6 +90,7 @@
                 :placeholder="t('el.datepicker.endTime')"
                 :model-value="maxVisibleTime"
                 :readonly="!minDate"
+                :validate-event="false"
                 @focus="minDate && (maxTimePickerVisible = true)"
                 @input="(val) => handleTimeInput(val, 'max')"
                 @change="(val) => handleTimeChange(val, 'max')"
@@ -539,7 +543,6 @@ const handleMaxTimeClose = () => {
 const handleDateInput = (value: string | null, type: ChangeType) => {
   dateUserInput.value[type] = value
   const parsedValueD = dayjs(value, dateFormat.value).locale(lang.value)
-
   if (parsedValueD.isValid()) {
     if (disabledDate && disabledDate(parsedValueD.toDate())) {
       return
@@ -550,7 +553,10 @@ const handleDateInput = (value: string | null, type: ChangeType) => {
         .year(parsedValueD.year())
         .month(parsedValueD.month())
         .date(parsedValueD.date())
-      if (!props.unlinkPanels) {
+      if (
+        !props.unlinkPanels &&
+        (!maxDate.value || maxDate.value.isBefore(minDate.value))
+      ) {
         rightDate.value = parsedValueD.add(1, 'month')
         maxDate.value = minDate.value.add(1, 'month')
       }
@@ -560,7 +566,10 @@ const handleDateInput = (value: string | null, type: ChangeType) => {
         .year(parsedValueD.year())
         .month(parsedValueD.month())
         .date(parsedValueD.date())
-      if (!props.unlinkPanels) {
+      if (
+        !props.unlinkPanels &&
+        (!minDate.value || minDate.value.isAfter(maxDate.value))
+      ) {
         leftDate.value = parsedValueD.subtract(1, 'month')
         minDate.value = maxDate.value.subtract(1, 'month')
       }

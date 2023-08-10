@@ -29,6 +29,7 @@
         :model-value="firstValue"
         :vertical="vertical"
         :tooltip-class="tooltipClass"
+        :placement="placement"
         role="slider"
         :aria-label="
           range || !isLabeledByFormItem ? firstButtonLabel : undefined
@@ -50,6 +51,7 @@
         :model-value="secondValue"
         :vertical="vertical"
         :tooltip-class="tooltipClass"
+        :placement="placement"
         role="slider"
         :aria-label="secondButtonLabel"
         :aria-valuemin="firstValue"
@@ -108,13 +110,9 @@
 <script lang="ts" setup>
 import { computed, provide, reactive, toRefs } from 'vue'
 import ElInputNumber from '@element-plus/components/input-number'
-import {
-  useFormItemInputId,
-  useLocale,
-  useNamespace,
-  useSize,
-} from '@element-plus/hooks'
-import { sliderContextKey } from '@element-plus/tokens'
+import { useFormItemInputId, useFormSize } from '@element-plus/components/form'
+import { useLocale, useNamespace } from '@element-plus/hooks'
+import { sliderContextKey } from './constants'
 import { sliderEmits, sliderProps } from './slider'
 import SliderButton from './button.vue'
 import SliderMarker from './marker'
@@ -170,7 +168,7 @@ const { inputId, isLabeledByFormItem } = useFormItemInputId(props, {
   formItemContext: elFormItem,
 })
 
-const sliderWrapperSize = useSize()
+const sliderWrapperSize = useFormSize()
 const sliderInputSize = computed(
   () => props.inputSize || sliderWrapperSize.value
 )

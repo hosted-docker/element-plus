@@ -8,13 +8,14 @@
     :aria-labelledby="triggerId"
     @blur="onBlur"
     @focus="onFocus"
-    @keydown="handleKeydown"
-    @mousedown="onMousedown"
+    @keydown.self="handleKeydown"
+    @mousedown.self="onMousedown"
   >
     <slot />
   </ul>
 </template>
 <script lang="ts">
+// @ts-nocheck
 import { computed, defineComponent, inject, unref } from 'vue'
 import { composeEventHandlers, composeRefs } from '@element-plus/utils'
 import { EVENT_CODE } from '@element-plus/constants'

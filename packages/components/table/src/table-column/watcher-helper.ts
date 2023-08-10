@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getCurrentInstance, watch } from 'vue'
 import { hasOwn } from '@element-plus/utils'
 import { parseMinWidth, parseWidth } from '../util'
@@ -50,6 +51,7 @@ function useWatcher<T>(
       'label',
       'filters',
       'filterMultiple',
+      'filteredValue',
       'sortable',
       'index',
       'formatter',

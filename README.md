@@ -64,13 +64,18 @@ You can also try Element Plus out with the components built-in playground.
   <tbody>
     <tr>
       <td align="center" valign="middle">
-        <a href="https://vform666.com/vform3.html?from=element_plus" target="_blank">
+        <a href="https://www.vform666.com/" target="_blank">
           <img width="150px" src="https://user-images.githubusercontent.com/17680888/156870588-b25a42d5-888b-4943-8b1b-5239dfd8f4d2.png">
         </a>
       </td>
       <td align="center" valign="middle">
         <a href="https://js.design?source=element-plus" target="_blank">
           <img width="150px" src="https://user-images.githubusercontent.com/17680888/160634485-df0d00af-8633-4ab8-9a72-aac2b65d1d36.png">
+        </a>
+      </td>
+      <td align="center" valign="middle">
+        <a href="https://www.misboot.com/?from=element-plus" target="_blank">
+          <img width="150px" src="https://github-production-user-asset-6210df.s3.amazonaws.com/82012629/250157573-b8ab8d68-ff6b-496f-beb1-9863a545d2af.png">
         </a>
       </td>
     </tr>
@@ -92,16 +97,6 @@ You can also try Element Plus out with the components built-in playground.
           <img width="130px" src="https://user-images.githubusercontent.com/10095631/41342907-e44e7196-6f2f-11e8-92f2-47702dc8f059.png">
         </a>
       </td>
-      <td align="center" valign="middle">
-        <a href="https://www.renren.io/?from=element-ui" target="_blank">
-          <img width="130px" src="https://user-images.githubusercontent.com/82012629/126620778-0d8ab509-018a-45d7-b8de-a5bac2ad519a.png">
-        </a>
-      </td>
-      <td align="center" valign="middle">
-        <a href="https://form.making.link/?from=element_plus" target="_blank">
-          <img width="130px" src="https://user-images.githubusercontent.com/17680888/159736613-13c7c2dc-744e-4eec-b801-f4ca57871787.png">
-        </a>
-      </td>
     </tr>
   </tbody>
 </table>
@@ -118,11 +113,11 @@ above and leave a message if you want to help translating Element Plus into your
 
 ### How to help translating
 
-See how to help translating in [Translating Element Plus](./HELP_TRANSLATING.md).
+See how to help translating in [Translating Element Plus](https://element-plus.org/en-US/guide/translation.html).
 
 ## Stay tuned :eyes:
 
-Join our [Discord](https://discord.link/ElementPlus) to start communicating with everybody.
+Join our [Discord](https://discord.com/invite/gXK9XNzW3X) to start communicating with everybody.
 
 ## This thing is broken, I should help improve it!
 
@@ -143,9 +138,6 @@ We are now lacking of experts of `Testing`, `GitHub Actions`, `PM`, if you do fe
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [Become a sponsor](https://opencollective.com/element-plus#sponsor)
 
 <a href="https://opencollective.com/element-plus/sponsor/0/website" target="_blank"><img src="https://opencollective.com/element-plus/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/element-plus/sponsor/1/website" target="_blank"><img src="https://opencollective.com/element-plus/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/element-plus/sponsor/2/website" target="_blank"><img src="https://opencollective.com/element-plus/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/element-plus/sponsor/3/website" target="_blank"><img src="https://opencollective.com/element-plus/sponsor/3/avatar.svg"></a>
 
 ## Contributors
 

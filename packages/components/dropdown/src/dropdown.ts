@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { buildProps, definePropType, iconPropType } from '@element-plus/utils'
 import { EVENT_CODE } from '@element-plus/constants'
 import { createCollectionWithScope } from '@element-plus/components/collection'
@@ -86,6 +87,7 @@ export const dropdownProps = buildProps({
   buttonProps: {
     type: definePropType<ButtonProps>(Object),
   },
+  teleported: useTooltipContentProps.teleported,
 } as const)
 
 export const dropdownItemProps = buildProps({

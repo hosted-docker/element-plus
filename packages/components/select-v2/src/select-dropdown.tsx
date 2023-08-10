@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, ref, unref } from 'vue'
+import { computed, defineComponent, inject, ref, unref, watch } from 'vue'
 import { get } from 'lodash-unified'
 import { isObject, isUndefined } from '@element-plus/utils'
 import {
@@ -32,6 +32,14 @@ export default defineComponent({
     const cachedHeights = ref<Array<number>>([])
 
     const listRef = ref()
+
+    const size = computed(() => props.data.length)
+    watch(
+      () => size.value,
+      () => {
+        select.popper.value.updatePopper?.()
+      }
+    )
 
     const isSized = computed(() =>
       isUndefined(select.props.estimatedOptionHeight)
@@ -233,6 +241,7 @@ export default defineComponent({
             height={height}
             width={width}
             total={data.length}
+            // @ts-ignore - dts problem
             onKeydown={onKeydown}
           >
             {{

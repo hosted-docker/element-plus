@@ -26,6 +26,7 @@
             :aria-label="title || undefined"
             :aria-labelledby="!title ? titleId : undefined"
             :aria-describedby="bodyId"
+            v-bind="$attrs"
             :class="[ns.b(), direction, visible && 'open', customClass]"
             :style="
               isHorizontal ? 'width: ' + drawerSize : 'height: ' + drawerSize
@@ -86,6 +87,7 @@ import { Close } from '@element-plus/icons-vue'
 import { ElOverlay } from '@element-plus/components/overlay'
 import ElFocusTrap from '@element-plus/components/focus-trap'
 import { useDialog } from '@element-plus/components/dialog'
+import { addUnit } from '@element-plus/utils'
 import ElIcon from '@element-plus/components/icon'
 import { useDeprecated, useLocale, useNamespace } from '@element-plus/hooks'
 import { drawerEmits, drawerProps } from './drawer'
@@ -98,6 +100,7 @@ export default defineComponent({
     ElIcon,
     Close,
   },
+  inheritAttrs: false,
   props: drawerProps,
   emits: drawerEmits,
 
@@ -112,6 +115,17 @@ export default defineComponent({
       },
       computed(() => !!slots.title)
     )
+    useDeprecated(
+      {
+        scope: 'el-drawer',
+        from: 'custom-class',
+        replacement: 'class',
+        version: '2.3.0',
+        ref: 'https://element-plus.org/en-US/component/drawer.html#attributes',
+        type: 'Attribute',
+      },
+      computed(() => !!props.customClass)
+    )
 
     const drawerRef = ref<HTMLElement>()
     const focusStartRef = ref<HTMLElement>()
@@ -121,9 +135,7 @@ export default defineComponent({
     const isHorizontal = computed(
       () => props.direction === 'rtl' || props.direction === 'ltr'
     )
-    const drawerSize = computed(() =>
-      typeof props.size === 'number' ? `${props.size}px` : props.size
-    )
+    const drawerSize = computed(() => addUnit(props.size))
 
     return {
       ...useDialog(props, drawerRef),
